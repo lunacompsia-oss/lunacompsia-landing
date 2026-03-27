@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dependency Intelligence Suite — MCP Servers for AI Assistants</title>
+  <meta name="description" content="Three MCP servers that give AI assistants real-time dependency intelligence: changelogs, vulnerabilities, outdated packages, and license compliance.">
+  <meta property="og:title" content="Dependency Intelligence Suite by Lunacompsia">
+  <meta property="og:description" content="Give your AI assistant superpowers for dependency management. Changelogs, vulnerabilities, and license compliance — all via MCP.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dependency Intelligence Suite">
+  <meta name="twitter:description" content="MCP servers for changelogs, dependency health, and license compliance.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --text: #e4e4ef;
+      --text-dim: #8888a0;
+      --accent: #6c63ff;
+      --accent-glow: rgba(108, 99, 255, 0.15);
+      --green: #34d399;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --blue: #60a5fa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, #a5a0ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-dim);
+      max-width: 640px;
+      margin: 0 auto 36px;
+    }
+
+    .install-block {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 28px;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+      color: var(--green);
+      cursor: pointer;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+
+    .install-block:hover { border-color: var(--accent); }
+
+    .install-block .comment { color: var(--text-dim); }
+
+    .install-block .copy-hint {
+      position: absolute;
+      top: -28px;
+      right: 0;
+      font-size: 11px;
+      color: var(--text-dim);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .install-block:hover .copy-hint { opacity: 1; }
+
+    /* Servers Grid */
+    .servers {
+      padding: 60px 0;
+    }
+
+    .servers h2 {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .servers .subtitle {
+      text-align: center;
+      color: var(--text-dim);
+      margin-bottom: 48px;
+      font-size: 1rem;
+    }
+
+    .server-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .server-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .server-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .server-card .icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .server-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    .server-card .question {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .server-card p {
+      color: var(--text-dim);
+      font-size: 0.92rem;
+      margin-bottom: 16px;
+    }
+
+    .tool-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tool-list li {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+      background: rgba(108, 99, 255, 0.08);
+      border: 1px solid rgba(108, 99, 255, 0.15);
+      padding: 3px 10px;
+      border-radius: 4px;
+      color: var(--accent);
+    }
+
+    .server-card .install-cmd {
+      display: block;
+      margin-top: 16px;
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--green);
+      background: rgba(52, 211, 153, 0.06);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(52, 211, 153, 0.12);
+    }
+
+    .server-card a {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .server-card a:hover { color: var(--accent); }
+
+    /* How It Works */
+    .how-it-works {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 48px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+      text-align: center;
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .steps h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .steps p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    /* Use Cases */
+    .use-cases {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .use-cases h2 {
+      text-align: center;
+      font-size: 1.6rem;
+      margin-bottom: 48px;
+    }
+
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .use-case {
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    .use-case .prompt {
+      font-family: monospace;
+      font-size: 13px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+
+    .use-case .answer {
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .cta h2 {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--text-dim);
+      margin-bottom: 32px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #5b52ee;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* Stats bar */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 32px 0;
+      flex-wrap: wrap;
+    }
+
+    .stat { text-align: center; }
+
+    .stat .num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat .label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 48px 0 40px; }
+      .stats { gap: 24px; }
+      .stat .num { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Open Source MCP Servers</div>
+      <h1>Dependency Intelligence<br>for AI Assistants</h1>
+      <p>Three MCP servers that answer every dependency question: what changed, what's broken, and what's allowed. Works with Claude, Cursor, and any MCP-compatible client.</p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="num">3</div>
+          <div class="label">MCP Servers</div>
+        </div>
+        <div class="stat">
+          <div class="num">12</div>
+          <div class="label">Tools</div>
+        </div>
+        <div class="stat">
+          <div class="num">0</div>
+          <div class="label">External Dependencies</div>
+        </div>
+      </div>
+
+      <div class="install-block" onclick="navigator.clipboard.writeText('npx -y github:lunacompsia-oss/mcp-server-changelog')">
+        <span class="copy-hint">click to copy</span>
+        <span class="comment">// pick any server and go</span><br>
+        npx -y github:lunacompsia-oss/mcp-server-changelog
+      </div>
+    </div>
+  </section>
+
+  <!-- Server Cards -->
+  <section class="servers">
+    <div class="container">
+      <h2>The Suite</h2>
+      <p class="subtitle">Each server answers a different dependency question</p>
+
+      <div class="server-grid">
+
+        <!-- Changelog -->
+        <div class="server-card">
+          <div class="icon">📋</div>
+          <h3>mcp-server-changelog</h3>
+          <div class="question">What changed?</div>
+          <p>Changelogs, release notes, version diffs, and breaking changes for any package. Supports npm, PyPI, crates.io, and GitHub repos.</p>
+          <ul class="tool-list">
+            <li>get_changelog</li>
+            <li>get_releases</li>
+            <li>compare_versions</li>
+            <li>get_breaking_changes</li>
+          </ul>
+          <code class="install-cmd">npx -y github:lunacompsia-oss/mcp-server-changelog</code>
+          <a href="https://github.com/lunacompsia-oss/mcp-server-changelog">View on GitHub &rarr;</a>
+        </div>
+
+        <!-- Deps -->
+        <div class="server-card">
+          <div class="icon">🛡️</div>
+          <h3>mcp-server-deps</h3>
+          <div class="question">What's broken?</div>
+          <p>Outdated packages, known vulnerabilities (via OSV.dev), dependency trees, and package health scores. Real-time security intelligence.</p>
+          <ul class="tool-list">
+            <li>check_outdated</li>
+            <li>check_vulnerabilities</li>
+            <li>get_dependency_tree</li>
+            <li>check_package_health</li>
+          </ul>
+          <code class="install-cmd">npx -y github:lunacompsia-oss/mcp-server-deps</code>
+          <a href="https://github.com/lunacompsia-oss/mcp-server-deps">View on GitHub &rarr;</a>
+        </div>
+
+        <!-- License -->
+        <div class="server-card">
+          <div class="icon">⚖️</div>
+          <h3>mcp-server-license</h3>
+          <div class="question">What's allowed?</div>
+          <p>License detection, compatibility checks, project-wide compliance scans. Catches GPL-in-MIT, AGPL traps, and copyleft risks before they become legal problems.</p>
+          <ul class="tool-list">
+            <li>check_license</li>
+            <li>scan_project_licenses</li>
+            <li>check_compatibility</li>
+            <li>get_license_details</li>
+          </ul>
+          <code class="install-cmd">npx -y github:lunacompsia-oss/mcp-server-license</code>
+          <a href="https://github.com/lunacompsia-oss/mcp-server-license">View on GitHub &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2>How It Works</h2>
+      <div class="steps">
+        <div>
+          <div class="step-num">1</div>
+          <h3>Install</h3>
+          <p>Add a server to your MCP client config. One line in Claude Desktop, Cursor, or any MCP-compatible tool.</p>
+        </div>
+        <div>
+          <div class="step-num">2</div>
+          <h3>Ask</h3>
+          <p>Ask your AI assistant about dependencies in natural language. "Is this safe to upgrade?" "Any vulnerabilities?" "License compatible?"</p>
+        </div>
+        <div>
+          <div class="step-num">3</div>
+          <h3>Act</h3>
+          <p>Get actionable answers with real data. No more tab-switching to npm, GitHub advisories, or license databases.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="use-cases">
+    <div class="container">
+      <h2>What You Can Ask</h2>
+      <div class="use-case-grid">
+        <div class="use-case">
+          <div class="prompt">"What broke between Express 4 and 5?"</div>
+          <div class="answer">changelog server pulls the diff and highlights breaking changes</div>
+        </div>
+        <div class="use-case">
+          <div class="prompt">"Scan my package.json for vulnerabilities"</div>
+          <div class="answer">deps server checks every dependency against OSV.dev</div>
+        </div>
+        <div class="use-case">
+          <div class="prompt">"Can I use this GPL library in my MIT project?"</div>
+          <div class="answer">license server checks SPDX compatibility and flags conflicts</div>
+        </div>
+        <div class="use-case">
+          <div class="prompt">"Which of my deps are outdated?"</div>
+          <div class="answer">deps server compares versions and groups by major/minor/patch</div>
+        </div>
+        <div class="use-case">
+          <div class="prompt">"Show me the React 19 release notes"</div>
+          <div class="answer">changelog server fetches GitHub Releases and formats them</div>
+        </div>
+        <div class="use-case">
+          <div class="prompt">"Audit all licenses in my project"</div>
+          <div class="answer">license server scans deps and produces a risk report</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Start in 30 Seconds</h2>
+      <p>Add to your Claude Desktop config and start asking.</p>
+      <div class="cta-buttons">
+        <a href="https://github.com/lunacompsia-oss" class="btn btn-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          View on GitHub
+        </a>
+        <a href="#servers" class="btn btn-secondary">See All Tools</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Built by <a href="https://github.com/lunacompsia-oss">lunacompsia-oss</a> &middot; MIT License &middot; Made with MCP SDK</p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
