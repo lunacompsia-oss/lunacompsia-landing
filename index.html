@@ -641,7 +641,7 @@
     <div class="container">
       <div class="featured-badge">Featured Product</div>
       <h2><span class="gradient">DepIntel Action</span> — Dependency Scanning for GitHub CI/CD</h2>
-      <p>Drop one step into your workflow and get vulnerability alerts, license risk reports, and actionable PR comments on every push. No config files, no external services, no API keys.</p>
+      <p>Drop one step into your workflow and get vulnerability alerts, license risk reports, and PR comments on every dependency change. Supports npm (package.json) and Python (requirements.txt, pyproject.toml). No config, no API keys.</p>
 
       <div class="featured-layout">
         <div>
@@ -674,6 +674,13 @@
                 <p>Block merges when critical vulnerabilities are found. Enforce security policy as code with a single flag.</p>
               </div>
             </li>
+            <li>
+              <div class="feat-icon pr">&#x1f310;</div>
+              <div>
+                <h4>npm + Python</h4>
+                <p>Auto-detects package.json, requirements.txt, and pyproject.toml. Each dependency is checked against its native registry.</p>
+              </div>
+            </li>
           </ul>
 
           <div class="featured-cta">
@@ -690,21 +697,25 @@
             <span>.github/workflows/depintel.yml</span>
             <button onclick="navigator.clipboard.writeText(document.getElementById('yaml-snippet').textContent)">Copy</button>
           </div>
-          <pre id="yaml-snippet"><span class="key">name:</span> <span class="str">Dependency Scan</span>
-<span class="key">on:</span> <span class="str">[push, pull_request]</span>
+          <pre id="yaml-snippet"><span class="key">name:</span> <span class="str">Dependency Intelligence</span>
+<span class="key">on:</span>
+  <span class="key">pull_request:</span>
+    <span class="key">paths:</span> <span class="cmt"># npm + Python</span>
+      - <span class="str">'package.json'</span>
+      - <span class="str">'requirements*.txt'</span>
+      - <span class="str">'pyproject.toml'</span>
 
 <span class="key">jobs:</span>
   <span class="key">depintel:</span>
     <span class="key">runs-on:</span> <span class="str">ubuntu-latest</span>
     <span class="key">steps:</span>
       - <span class="key">uses:</span> <span class="str">actions/checkout@v4</span>
+        <span class="key">with:</span>
+          <span class="key">fetch-depth:</span> <span class="bool">0</span>
 
       - <span class="key">uses:</span> <span class="str">lunacompsia-oss/depintel-action@v1</span>
         <span class="key">with:</span>
-          <span class="key">scan-vulnerabilities:</span> <span class="bool">true</span>
-          <span class="key">scan-licenses:</span> <span class="bool">true</span>
-          <span class="key">fail-on-critical:</span> <span class="bool">true</span>
-          <span class="key">comment-on-pr:</span> <span class="bool">true</span></pre>
+          <span class="key">fail-on-critical:</span> <span class="bool">true</span></pre>
         </div>
       </div>
 
