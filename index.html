@@ -3,17 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dependency Intelligence Suite — MCP Servers for AI Assistants</title>
-  <meta name="description" content="Three MCP servers that give AI assistants real-time dependency intelligence: changelogs, vulnerabilities, outdated packages, and license compliance.">
-  <meta property="og:title" content="Dependency Intelligence Suite by Lunacompsia">
-  <meta property="og:description" content="Give your AI assistant superpowers for dependency management. Changelogs, vulnerabilities, and license compliance — all via MCP.">
+  <title>DepIntel — Dependency Intelligence for CI/CD and AI Assistants</title>
+  <meta name="description" content="GitHub Action and MCP servers for dependency intelligence: vulnerability scanning, license compliance, changelogs, and outdated package detection in your CI/CD pipeline and AI assistants.">
+  <meta property="og:title" content="DepIntel by Lunacompsia — Dependency Intelligence Suite">
+  <meta property="og:description" content="Ship secure code with DepIntel Action for GitHub CI/CD. Plus MCP servers for AI-assisted dependency management.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Dependency Intelligence Suite">
-  <meta name="twitter:description" content="MCP servers for changelogs, dependency health, and license compliance.">
+  <meta name="twitter:title" content="DepIntel — Dependency Intelligence for CI/CD">
+  <meta name="twitter:description" content="GitHub Action for vulnerability scanning, license risk, and dependency health. Plus MCP servers for AI assistants.">
   <link rel="canonical" href="https://lunacompsia-landing.pages.dev/">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
   <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DepIntel Action",
+    "description": "GitHub Action for CI/CD dependency scanning: vulnerability detection, license risk assessment, PR comments, and fail-on-critical mode.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Lunacompsia",
+      "url": "https://github.com/lunacompsia-oss"
+    },
+    "license": "https://opensource.org/licenses/MIT",
+    "url": "https://lunacompsia-landing.pages.dev/",
+    "codeRepository": "https://github.com/lunacompsia-oss/depintel-action"
+  },
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -34,7 +55,7 @@
     "license": "https://opensource.org/licenses/MIT",
     "url": "https://lunacompsia-landing.pages.dev/",
     "codeRepository": "https://github.com/lunacompsia-oss"
-  }
+  }]
   </script>
   <style>
     :root {
@@ -405,6 +426,177 @@
       margin-top: 4px;
     }
 
+    /* Featured Product */
+    .featured {
+      padding: 60px 0 70px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(108, 99, 255, 0.04) 0%, transparent 100%);
+    }
+
+    .featured-badge {
+      display: inline-block;
+      padding: 5px 14px;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .featured h2 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .featured h2 .gradient {
+      background: linear-gradient(135deg, #34d399 0%, #60a5fa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .featured > .container > p {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      max-width: 660px;
+      margin-bottom: 40px;
+    }
+
+    .featured-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .featured-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .featured-features li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .featured-features .feat-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .featured-features .feat-icon.vuln { background: rgba(248, 113, 113, 0.1); }
+    .featured-features .feat-icon.license { background: rgba(251, 191, 36, 0.1); }
+    .featured-features .feat-icon.pr { background: rgba(96, 165, 250, 0.1); }
+    .featured-features .feat-icon.fail { background: rgba(108, 99, 255, 0.1); }
+
+    .featured-features h4 {
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .featured-features p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .yaml-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .yaml-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .yaml-header span {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .yaml-header button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .yaml-header button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .yaml-block pre {
+      padding: 16px 20px;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      overflow-x: auto;
+      color: var(--text);
+    }
+
+    .yaml-block .key { color: var(--blue); }
+    .yaml-block .str { color: var(--green); }
+    .yaml-block .cmt { color: var(--text-dim); }
+    .yaml-block .bool { color: var(--amber); }
+
+    .featured-cta {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .section-divider {
+      text-align: center;
+      padding: 40px 0 0;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    .section-divider .line {
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto 12px;
+    }
+
+    @media (max-width: 768px) {
+      .featured-layout {
+        grid-template-columns: 1fr;
+      }
+      .featured-cta {
+        flex-wrap: wrap;
+      }
+    }
+
     @media (max-width: 640px) {
       .hero { padding: 48px 0 40px; }
       .stats { gap: 24px; }
@@ -417,29 +609,108 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">Open Source MCP Servers</div>
-      <h1>Dependency Intelligence<br>for AI Assistants</h1>
-      <p>Three MCP servers that answer every dependency question: what changed, what's broken, and what's allowed. Works with Claude, Cursor, and any MCP-compatible client.</p>
+      <div class="hero-badge">Open Source Developer Tools</div>
+      <h1>Dependency Intelligence<br>for Every Workflow</h1>
+      <p>From CI/CD pipelines to AI assistants — scan vulnerabilities, audit licenses, and track breaking changes across your entire dependency chain.</p>
 
       <div class="stats">
+        <div class="stat">
+          <div class="num">1</div>
+          <div class="label">GitHub Action</div>
+        </div>
         <div class="stat">
           <div class="num">3</div>
           <div class="label">MCP Servers</div>
         </div>
         <div class="stat">
-          <div class="num">12</div>
-          <div class="label">Tools</div>
-        </div>
-        <div class="stat">
-          <div class="num">0</div>
-          <div class="label">External Dependencies</div>
+          <div class="num">1</div>
+          <div class="label">REST API</div>
         </div>
       </div>
 
-      <div class="install-block" onclick="navigator.clipboard.writeText('npx -y github:lunacompsia-oss/mcp-server-changelog')">
+      <div class="install-block" onclick="navigator.clipboard.writeText('uses: lunacompsia-oss/depintel-action@v1')">
         <span class="copy-hint">click to copy</span>
-        <span class="comment">// pick any server and go</span><br>
-        npx -y github:lunacompsia-oss/mcp-server-changelog
+        <span class="comment"># add to any GitHub workflow</span><br>
+        uses: lunacompsia-oss/depintel-action@v1
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured: DepIntel Action -->
+  <section class="featured" id="depintel-action">
+    <div class="container">
+      <div class="featured-badge">Featured Product</div>
+      <h2><span class="gradient">DepIntel Action</span> — Dependency Scanning for GitHub CI/CD</h2>
+      <p>Drop one step into your workflow and get vulnerability alerts, license risk reports, and actionable PR comments on every push. No config files, no external services, no API keys.</p>
+
+      <div class="featured-layout">
+        <div>
+          <ul class="featured-features">
+            <li>
+              <div class="feat-icon vuln">&#x1f6a8;</div>
+              <div>
+                <h4>Vulnerability Scanning</h4>
+                <p>Checks every dependency against OSV.dev for known CVEs. Surfaces severity, affected versions, and fix recommendations.</p>
+              </div>
+            </li>
+            <li>
+              <div class="feat-icon license">&#x2696;&#xfe0f;</div>
+              <div>
+                <h4>License Risk Assessment</h4>
+                <p>Detects copyleft, AGPL traps, and GPL-in-MIT conflicts. Flags risky licenses before they reach production.</p>
+              </div>
+            </li>
+            <li>
+              <div class="feat-icon pr">&#x1f4ac;</div>
+              <div>
+                <h4>PR Comments</h4>
+                <p>Posts a clean summary directly on your pull request. Developers see issues without leaving their review flow.</p>
+              </div>
+            </li>
+            <li>
+              <div class="feat-icon fail">&#x26d4;</div>
+              <div>
+                <h4>Fail-on-Critical Mode</h4>
+                <p>Block merges when critical vulnerabilities are found. Enforce security policy as code with a single flag.</p>
+              </div>
+            </li>
+          </ul>
+
+          <div class="featured-cta">
+            <a href="https://github.com/lunacompsia-oss/depintel-action" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              View on GitHub
+            </a>
+            <a href="https://github.com/marketplace?type=actions&query=depintel" class="btn btn-secondary">GitHub Marketplace</a>
+          </div>
+        </div>
+
+        <div class="yaml-block">
+          <div class="yaml-header">
+            <span>.github/workflows/depintel.yml</span>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('yaml-snippet').textContent)">Copy</button>
+          </div>
+          <pre id="yaml-snippet"><span class="key">name:</span> <span class="str">Dependency Scan</span>
+<span class="key">on:</span> <span class="str">[push, pull_request]</span>
+
+<span class="key">jobs:</span>
+  <span class="key">depintel:</span>
+    <span class="key">runs-on:</span> <span class="str">ubuntu-latest</span>
+    <span class="key">steps:</span>
+      - <span class="key">uses:</span> <span class="str">actions/checkout@v4</span>
+
+      - <span class="key">uses:</span> <span class="str">lunacompsia-oss/depintel-action@v1</span>
+        <span class="key">with:</span>
+          <span class="key">scan-vulnerabilities:</span> <span class="bool">true</span>
+          <span class="key">scan-licenses:</span> <span class="bool">true</span>
+          <span class="key">fail-on-critical:</span> <span class="bool">true</span>
+          <span class="key">comment-on-pr:</span> <span class="bool">true</span></pre>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <span class="line"></span>
+        Also available as MCP servers and a REST API
       </div>
     </div>
   </section>
@@ -593,14 +864,14 @@
   <!-- CTA -->
   <section class="cta">
     <div class="container">
-      <h2>Start in 30 Seconds</h2>
-      <p>Add to your Claude Desktop config, or use the REST API directly.</p>
+      <h2>Secure Your Dependencies in 30 Seconds</h2>
+      <p>Add DepIntel Action to your CI/CD pipeline, connect an MCP server to your AI assistant, or hit the REST API directly.</p>
       <div class="cta-buttons">
-        <a href="https://github.com/lunacompsia-oss" class="btn btn-primary">
+        <a href="https://github.com/lunacompsia-oss/depintel-action" class="btn btn-primary">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          View on GitHub
+          Get DepIntel Action
         </a>
-        <a href="#servers" class="btn btn-secondary">See All Tools</a>
+        <a href="https://github.com/lunacompsia-oss" class="btn btn-secondary">All Projects</a>
       </div>
     </div>
   </section>
