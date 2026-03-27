@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lunacompsia-landing.pages.dev/sitemap.xml
